@@ -13,15 +13,21 @@
     .container{ border-color: black}
   </style>
   <body>  
-    <div id="container">
+    
+      <input type="text" id="foo">
+      <select id="opção">
+        <option value="Nodo">Nodo</option>
+      </select>
+
       <input type="submit" >
       <button onclick="update(arvore.raiz)">Atualizar</button>
-      <button>Inserir</button>
+      <button onclick="foo()">Inserir</button>
+    <div id="container">  
     </div>
 <!-- load the d3.js library -->
 <script src="http://d3js.org/d3.v3.min.js"></script>
 <script>
-
+let nodos = [];
 class Nodo{
     constructor(value){
         this.value = value;
@@ -36,6 +42,7 @@ class Arvore{
     inserirRaiz(nodo){
         if (!this.raiz){
             this.raiz = nodo;
+            //nodos.push(nodo);
         }
         else{
             this.raiz.pai = nodo;
@@ -47,6 +54,7 @@ class Arvore{
         if(this.raiz.children==0){
             nodo.pai = nodoPai;
             nodoPai.children.push(nodo);
+            nodos.push(nodo);
             //console.log("nodo inserido:1 ", nodo.value, "no pai: ", nodoPai.value)
         return;
         } else if (!this.buscaNodo(nodoPai.children)){
@@ -74,9 +82,6 @@ class Arvore{
         }
         return;
     }
-    imprimir(){
-
-    }
     buscaNodo(info, nodo=''){
         let resultado = false;
         if (nodo == ''){
@@ -95,35 +100,47 @@ class Arvore{
     }
 
 }
-
 const arvore = new Arvore();
+
 let nodo0 = new Nodo("PAI");
 let nodo1 = new Nodo("Nodo1");
 let nodo2 = new Nodo("Nodo2");
 let nodo3 = new Nodo("Nodo3");
-let nodo4 = new Nodo("Filho4");
-let nodo5 = new Nodo("Filho5");
-let nodo6 = new Nodo("Filho6");
-let nodo7 = new Nodo("Nodo7");
-let nodo8 = new Nodo("Teste");
+let nodo4 = new Nodo("Nodo4");
+
 arvore.inserirRaiz(nodo0);
-//console.log("raiz--------------");
-//console.log(arvore.raiz);
+
 
 arvore.inserirNodo(nodo1, nodo0);
-arvore.inserirNodo(nodo2, nodo1);
-arvore.inserirNodo(nodo3, nodo1);
+arvore.inserirNodo(nodo2, nodo0);
+arvore.inserirNodo(nodo3, nodo0);
 arvore.inserirNodo(nodo4, nodo0);
-arvore.inserirNodo(nodo5, nodo0);
-arvore.inserirNodo(nodo6, nodo1);
-arvore.inserirNodo(nodo7, nodo5);
-arvore.inserirNodo(nodo8, nodo2);
-//console.log("node inserido:------------------");
 
 console.log(arvore);
+console.log(nodos);
 
+function foo(){
+  let  el = document.getElementById('foo').value;
+  console.log(el)   
+  let nodogenerico = new Nodo(el);
+  nodos.push(nodogenerico);
+  arvore.inserirNodo(nodogenerico, nodo0);
+  console.log(nodos)
+}
+select = document.getElementById('opção');
 
-
+function atualizarSelect(){
+  for (var i = 0; i < nodos.length; i++){
+    if (nodos.indexOf(nodos[i])){
+        var opt = document.createElement('option');
+        opt.text = nodos[i].value;
+        opt.value = nodos[i];
+        opt.innerHTML = nodos[i].value;
+        select.appendChild(opt);
+    }
+  }
+}
+atualizarSelect();
 var margin = {top: 20, right: 120, bottom: 20, left: 120},
 	width = 960 - margin.right - margin.left,
 	height = 500 - margin.top - margin.bottom;
@@ -154,18 +171,14 @@ d3.select(self.frameElement).style("height", "500px");
 
 function update(source) {
 
-  // Compute the new tree layout.
   var nodes = tree.nodes(root).reverse(),
 	  links = tree.links(nodes);
 
-  // Normalize for fixed-depth.
   nodes.forEach(function(d) { d.y = d.depth * 180; });
 
-  // Update the nodes…
   var node = svg.selectAll("g.node")
 	  .data(nodes, function(d) { return d.id || (d.id = ++i); });
 
-  // Enter any new nodes at the parent's previous position.
   var nodeEnter = node.enter().append("g")
 	  .attr("class", "node")
 	  .attr("transform", function(d) { return "translate(" + source.y0 + "," + source.x0 + ")"; })
@@ -182,7 +195,6 @@ function update(source) {
 	  .text(function(d) { return d.value; })
 	  .style("fill-opacity", 1e-6);
 
-  // Transition nodes to their new position.
   var nodeUpdate = node.transition()
 	  .duration(duration)
 	  .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; });
@@ -194,7 +206,6 @@ function update(source) {
   nodeUpdate.select("text")
 	  .style("fill-opacity", 1);
 
-  // Transition exiting nodes to the parent's new position.
   var nodeExit = node.exit().transition()
 	  .duration(duration)
 	  .attr("transform", function(d) { return "translate(" + source.y + "," + source.x + ")"; })
@@ -206,11 +217,9 @@ function update(source) {
   nodeExit.select("text")
 	  .style("fill-opacity", 1e-6);
 
-  // Update the links…
   var link = svg.selectAll("path.link")
 	  .data(links, function(d) { return d.target.id; });
 
-  // Enter any new links at the parent's previous position.
   link.enter().insert("path", "g")
 	  .attr("class", "link")
 	  .attr("d", function(d) {
@@ -218,12 +227,11 @@ function update(source) {
 		return diagonal({source: o, target: o});
 	  });
 
-  // Transition links to their new position.
+   
   link.transition()
 	  .duration(duration)
 	  .attr("d", diagonal);
 
-  // Transition exiting nodes to the parent's new position.
   link.exit().transition()
 	  .duration(duration)
 	  .attr("d", function(d) {
@@ -255,4 +263,3 @@ function click(d) {
   <link rel="stylesheet" type="text.css" href="style.css">
   </body>
 </html>
-<!-- teste de commit-->
