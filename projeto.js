@@ -54,21 +54,21 @@ class Arvore{
         return;
     }
     imprimir(){
-
+        // não tem necessidade de implentar 
     }
-    buscaNodo(info, nodo=''){
+    buscaNodo(info){
+    
         let resultado = false;
-        if (nodo == ''){
-            nodo = this.raiz;
-        }
-        let nodoAtual = nodo;
-        if (nodoAtual.value == info);
-            return true;
-        for(let i =0 ; i< nodoAtual.filhos.length;i++){
-            resultado = this.buscaNodo(info,i);
-            if (resultado){
-                break
+        // if (nodo == ''){
+        //     nodo = this.raiz;
+        //     console.log("nodo", nodo);
+        // }
+        let nodo = this.raiz;
+        while (nodo){
+            if (nodoAtual.value === info){
+                return true;
             }
+
         }
         return resultado;
     }
@@ -82,14 +82,19 @@ let nodo2 = new Nodo("Filho2");
 let nodo3 = new Nodo("Filho3");
 let nodo4 = new Nodo("Filho4");
 let nodo5 = new Nodo("Filho5");
+// let nodo6 = new Nodo("Filho6");
 arvore.inserirRaiz(nodo0);
 console.log("raiz--------------");
 console.log(arvore.raiz);
 
 
-arvore.inserirNodo(nodo4, nodo0);
-arvore.inserirNodo(nodo5, nodo0);
+arvore.inserirNodo(nodo1, nodo0);
+arvore.inserirNodo(nodo2, nodo0);
+arvore.inserirNodo(nodo3, nodo1);
+arvore.inserirNodo(nodo4, nodo1);
+// arvore.inserirNodo(nodo6, nodo4);
 
 console.log("node inserido:------------------");
+// arvore.removeNodo(nodo3)
 
 console.log(arvore);
