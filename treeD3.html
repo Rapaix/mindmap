@@ -16,16 +16,15 @@
     
       <input type="text" id="foo">
       <select id="opção">
-        <option value="Nodo">Nodo</option>
       </select>
-
-      <input type="submit" >
       <button onclick="update(arvore.raiz)">Atualizar</button>
       <button onclick="foo()">Inserir</button>
     <div id="container">  
     </div>
 <!-- load the d3.js library -->
 <script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.4.1.min.js"></script>
+
 <script>
 let nodos = [];
 class Nodo{
@@ -101,46 +100,62 @@ class Arvore{
 
 }
 const arvore = new Arvore();
-
 let nodo0 = new Nodo("PAI");
 let nodo1 = new Nodo("Nodo1");
 let nodo2 = new Nodo("Nodo2");
 let nodo3 = new Nodo("Nodo3");
 let nodo4 = new Nodo("Nodo4");
-
+let nodo5 = new Nodo("Nodo5");
+let nodo6 = new Nodo("Nodo6");
+let nodo7 = new Nodo("Nodo7");
 arvore.inserirRaiz(nodo0);
-
+atualizarSelect();
 
 arvore.inserirNodo(nodo1, nodo0);
 arvore.inserirNodo(nodo2, nodo0);
 arvore.inserirNodo(nodo3, nodo0);
 arvore.inserirNodo(nodo4, nodo0);
+arvore.inserirNodo(nodo5, nodo1);
+arvore.inserirNodo(nodo6, nodo2);
+arvore.inserirNodo(nodo7, nodo1);
+
+
+
 
 console.log(arvore);
-console.log(nodos);
+console.log("nodos", nodos);
+
+
 
 function foo(){
   let  el = document.getElementById('foo').value;
-  console.log(el)   
+  let texto = $("#opção option:selected").text();
+  let no = $("#opção option:selected").val()
+  console.log(  $("#opção option:selected").val())
+  console.log(el, texto, no)   
   let nodogenerico = new Nodo(el);
   nodos.push(nodogenerico);
   arvore.inserirNodo(nodogenerico, nodo0);
   console.log(nodos)
 }
 select = document.getElementById('opção');
+let valor = $("#opcão :selected").val();
+console.log(valor);
+console.log(nodos);
 
 function atualizarSelect(){
-  for (var i = 0; i < nodos.length; i++){
-    if (nodos.indexOf(nodos[i])){
-        var opt = document.createElement('option');
-        opt.text = nodos[i].value;
-        opt.value = nodos[i];
-        opt.innerHTML = nodos[i].value;
-        select.appendChild(opt);
-    }
+  for (let i = 0; i < nodos.length; i++){
+      var opt = document.createElement('option');
+      opt.text = nodos[i].value;
+      opt.value = i;
+      opt.innerHTML = nodos[i].value;
+      select.appendChild(opt);
+      console.log(opt);
+  
   }
 }
-atualizarSelect();
+
+
 var margin = {top: 20, right: 120, bottom: 20, left: 120},
 	width = 960 - margin.right - margin.left,
 	height = 500 - margin.top - margin.bottom;
@@ -170,7 +185,7 @@ update(root);
 d3.select(self.frameElement).style("height", "500px");
 
 function update(source) {
-
+  atualizarSelect();
   var nodes = tree.nodes(root).reverse(),
 	  links = tree.links(nodes);
 
