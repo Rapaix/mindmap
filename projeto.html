@@ -19,9 +19,9 @@
     </style>
 </head>
 <body>
-  <p>Nodo <input type="text" id="inserir">
+  <p>Nodo <input type="text" id="nodoF">
   Nodo Pai
-  <input type="text" id="bar">
+  <input type="text" id="nodoP">
   <button onclick="inserir()">Inserir</button>
   <button onclick="arvore.remove(document.getElementById('inserir').value)">Remover</button>
     <div></div>
@@ -116,8 +116,8 @@
 
 
         function inserir(){
-          let  el = document.getElementById('foo').value;
-          let  nodoPai = document.getElementById('bar').value;
+          let  el = document.getElementById('nodoF').value;
+          let  nodoPai = document.getElementById('nodoP').value;
           arvore.add(el,bar);
           update(arvore.root);
         }
