@@ -19,11 +19,11 @@
     </style>
 </head>
 <body>
-  <p>Nodo <input type="text" id="foo">
+  <p>Nodo <input type="text" id="inserir">
   Nodo Pai
   <input type="text" id="bar">
-  <button onclick="foo()">Inserir</button>
-  <button onclick="arvore.remove(document.getElementById('foo').value)">Remover</button>
+  <button onclick="inserir()">Inserir</button>
+  <button onclick="arvore.remove(document.getElementById('inserir').value)">Remover</button>
     <div></div>
     <script type="text/javascript">
         class Nodo {
@@ -115,10 +115,10 @@
         arvore.add("filho19", "filho");
 
 
-        function foo(){
+        function inserir(){
           let  el = document.getElementById('foo').value;
           let  nodoPai = document.getElementById('bar').value;
-          arvore.add('el', nodoPai);
+          arvore.add(el,bar);
           update(arvore.root);
         }
         select = document.getElementById('opção');
