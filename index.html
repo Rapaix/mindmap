@@ -23,13 +23,14 @@
   Nodo Pai
   <input type="text" id="nodoP">
   <button onclick="inserir()">Inserir</button>
-  <button onclick="arvore.remove(document.getElementById('inserir').value)">Remover</button>
+  <button onclick="arvore.remove(document.getElementById('nodoF').value)">Remover</button>
     <div></div>
     <script type="text/javascript">
         class Nodo {
             constructor(value){
             this.value = value;
             this.children = [];
+            this.color = 'red';
             }      
         }
           
@@ -40,10 +41,13 @@
           
             add(value, toNodevalue) {
               const node = new Nodo(value);
+              node.children = [];
+              console.log(node);
               const parent = toNodevalue ? this.findBFS(toNodevalue) : null;
-              console.log(parent);
-              console.log(parent, value, this.root);
               if (parent) {
+                if(parent.children ==null){
+                  console.log('null')
+                }
                 parent.children.push(node);
               } else {
                 if (!this.root) {
@@ -64,12 +68,12 @@
                 for (let [index, child] of node.children.entries()) {
                   if (child.value === value) {
                     node.children.splice(index, 1);
+                    update(arvore.root);
                   } else {
                     queue.push(child);
                   }
                 }
               }
-              update(arvore.root);
             }
           
             contains(value) {
@@ -78,10 +82,11 @@
           
             findBFS(value) {
               const queue = [this.root];
+              //console.log("pilha",queue);
               while (queue.length) {
                 const node = queue.shift();
+                //console.log(node);
                 if (node.value === value) {
-                  let newNode = new Nodo(node.value);
                   return node;
                 }
                 for (const child of node.children) {
@@ -99,26 +104,29 @@
         arvore.add("filho3", "Pai");
         arvore.add("filho4", "filho3");
         arvore.add("filho5", "Pai");
-        arvore.add("filho6", "filho1");
-        arvore.add("filho7", "Pai");
-        arvore.add("filho8", "filho3");
-        arvore.add("filho9", "Pai");
-        arvore.add("filho10", "filho3");
-        arvore.add("filho11", "Pai");
-        arvore.add("filho12", "filho1");
-        arvore.add("filho13", "Pai");
-        arvore.add("filho14", "filho3");
-        arvore.add("filho15", "filho3");
-        arvore.add("filho16", "filho3");
-        arvore.add("filho17", "filho3");
-        arvore.add("filho18", "filho3");
-        arvore.add("filho19", "filho");
+
+        // arvore.add("filho6", "filho1");
+        // arvore.add("filho7", "Pai");
+        // arvore.add("filho8", "filho3");
+        // arvore.add("filho9", "Pai");
+        // arvore.add("filho10", "filho3");
+        // arvore.add("filho11", "Pai");
+        // arvore.add("filho12", "filho1");
+        // arvore.add("filho13", "Pai");
+        // arvore.add("filho14", "filho3");
+        // arvore.add("filho15", "filho3");
+        // arvore.add("filho16", "filho3");
+        // arvore.add("filho17", "filho3");
+        // arvore.add("filho18", "filho3");
+        // arvore.add("filho19", "filho");
 
 
         function inserir(){
           let  el = document.getElementById('nodoF').value;
           let  nodoPai = document.getElementById('nodoP').value;
-          arvore.add(el,bar);
+          console.log(el, nodoPai);
+          arvore.add(el, nodoPai);
+          
           update(arvore.root);
         }
         select = document.getElementById('opção');
